@@ -1,0 +1,262 @@
+package com.sameh.chatme.ui.fragments.profile
+
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import coil.load
+import com.sameh.chatme.R
+import com.sameh.chatme.constants.Constants
+import com.sameh.chatme.data.model.User
+import com.sameh.chatme.databinding.FragmentProfileTutorBinding
+import com.sameh.chatme.ui.alertdialog.LoadingAlertDialog
+import com.sameh.chatme.ui.presenter.FirebaseFireStoreSaveDataProfilePresenter
+import com.sameh.chatme.ui.presenter.FirebaseStorageProfilePresenter
+import com.sameh.chatme.ui.viewModel.ProfileViewModel
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class ProfileTutorFragment : Fragment(), FirebaseStorageProfilePresenter,
+    FirebaseFireStoreSaveDataProfilePresenter {
+
+    private lateinit var binding: FragmentProfileTutorBinding
+
+    private val profileViewModel: ProfileViewModel by viewModels()
+
+    private lateinit var loadingAlertDialog: LoadingAlertDialog
+
+    private var currentUser: User? = null
+
+    private var selectedUri: Uri? = null
+    //private var selectedUri2: Uri? = null
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentProfileTutorBinding.inflate(inflater, container, false)
+
+        loadingAlertDialog = LoadingAlertDialog(requireContext())
+
+        profileViewModel.repo.firebaseStorageProfile.firebaseStorageProfilePresenter = this
+        profileViewModel.repo.firebaseFireStoreSaveData.firebaseFireStoreSaveDataProfilePresenter = this
+        profileViewModel.getCurrentUser()
+
+        loadingAlertDialog.showLoadingAlertDialog()
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        profileViewModel.currentUserLiveData.observe(viewLifecycleOwner) {
+            if (it != null) {
+                currentUser = it
+                setUserDataInUi()
+            }
+            loadingAlertDialog.hideLoadingAlertDialog()
+        }
+
+        binding.cirImageUser.setOnClickListener {
+            openPhotoGalleryToSelectImage()
+        }
+
+
+        binding.btnSave.setOnClickListener {
+            if (!binding.edUsername.text.isNullOrEmpty()&&!binding.edSubject.text.isNullOrEmpty()&&!binding.edClass.text.isNullOrEmpty()&&!binding.edPhonenumber.text.isNullOrEmpty()&&!binding.edLineid.text.isNullOrEmpty()&&!binding.edBd.text.isNullOrEmpty()) {
+                loadingAlertDialog.showLoadingAlertDialog()
+                if (selectedUri != null ) {
+                    profileViewModel.uploadPhotoToFirebaseStorageProfile(selectedUri!!)
+
+                } else {
+                     updateUser(null, null)
+                    if (currentUser?.videoUrl == null){
+                        goToVideoFragment()
+                    }
+
+                }
+            } else {
+                binding.edUsername.error = Constants.REQUIRED_FIELD
+                binding.edSubject.error = Constants.REQUIRED_FIELD
+                binding.edClass.error = Constants.REQUIRED_FIELD
+                binding.edLineid.error = Constants.REQUIRED_FIELD
+                binding.edBd.error = Constants.REQUIRED_FIELD
+                binding.edPhonenumber.error = Constants.REQUIRED_FIELD
+            }
+        }
+
+        binding.btnResign.setOnClickListener {
+            confirmDeleteProfileImage()
+        }
+
+        binding.imgBtnBack.setOnClickListener {
+            goToLatestMessagesFragment()
+        }
+        binding.btnVideo.setOnClickListener {
+            goToVideoFragment()
+        }
+
+    }
+
+    private fun setUserDataInUi() {
+        if (currentUser?.profileImgUrl != null) {
+            binding.cirImageUser.load(currentUser?.profileImgUrl)
+        } else {
+            binding.cirImageUser.setImageResource(R.drawable.no_user_image)
+        }
+
+        binding.tvEmail.text = currentUser?.email
+        binding.edUsername.setText(currentUser?.username)
+        binding.edSubject.setText(currentUser?.subject)
+        binding.edClass.setText(currentUser?.teachClass)
+        binding.edDescription.setText(currentUser?.description)
+        binding.edPhonenumber.setText(currentUser?.phonenumber)
+        binding.edLineid.setText(currentUser?.lineid)
+        binding.edBd.setText(currentUser?.birthday)
+
+        if (currentUser?.subject == null){
+            binding.btnVideo.visibility = View.GONE
+            binding.btnResign.visibility = View.GONE
+        }
+    }
+
+    private fun goToLatestMessagesFragment() {
+        val action = ProfileTutorFragmentDirections.actionProfileTutorFragmentToLatestMessagesFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun goToVideoFragment() {
+        val action = ProfileTutorFragmentDirections.actionTutorFragmentToVideo()
+        findNavController().navigate(action)
+    }
+
+    private fun openPhotoGalleryToSelectImage() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        resultLauncherOfSelectPhoto.launch(intent)
+    }
+
+
+    private var resultLauncherOfSelectPhoto =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent: Intent? = result.data
+                val uri = intent!!.data
+
+                binding.cirImageUser.load(uri)
+                selectedUri = uri
+
+            } else {
+                Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+    private fun updateUser(uri: Uri?, imageId: String?  ) {
+        if (uri != null && imageId != null) {
+            val id = currentUser!!.id
+            val username = binding.edUsername.text.toString()
+            val email = currentUser!!.email
+            val subject = binding.edSubject.text.toString()
+            val teachClass = binding.edClass.text.toString()
+            val profileImage = uri.toString()
+            val description = binding.edDescription.text.toString()
+            val phonenumber = binding.edPhonenumber.text.toString()
+            val lineid = binding.edLineid.text.toString()
+            val videoUrl = currentUser!!.videoUrl
+            val videoId = currentUser!!.videoId
+            val birthday = binding.edBd.text.toString()
+            val user = User(id, username, email, profileImage, imageId, subject ,teachClass,description,phonenumber,lineid,videoUrl,birthday,videoId)
+            profileViewModel.updateUserInFireStoreDB(user)
+        } else {
+            val id = currentUser!!.id
+            val username = binding.edUsername.text.toString()
+            val email = currentUser!!.email
+            val subject = binding.edSubject.text.toString()
+            val teachClass = binding.edClass.text.toString()
+            val description = binding.edDescription.text.toString()
+            val phonenumber = binding.edPhonenumber.text.toString()
+            val lineid = binding.edLineid.text.toString()
+            val videoUrl = currentUser!!.videoUrl
+            val videoId = currentUser!!.videoId
+            val birthday = binding.edBd.text.toString()
+            val profileImage = currentUser!!.profileImgUrl
+            val profileImageId = currentUser!!.profileImageId
+            val user = User(id, username, email, profileImage, profileImageId, subject, teachClass,description,phonenumber,lineid,videoUrl,birthday,videoId)
+            profileViewModel.updateUserInFireStoreDB(user)
+        }
+    }
+
+    private fun confirmDeleteProfileImage() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Resigned as a tutor")
+        builder.setMessage("Are you sure to resigned as a tutor ?")
+        builder.setPositiveButton("Yes") { _, _ ->
+            deleteProfileImage()
+        }
+        builder.setNegativeButton("No") { _, _ -> }
+        builder.show()
+    }
+
+    private fun deleteProfileImage() {
+        if (currentUser!!.subject != null) {
+            loadingAlertDialog.showLoadingAlertDialog()
+            profileViewModel.updateUserInFireStoreDB(
+                user = User(
+                    id = currentUser!!.id,
+                    currentUser!!.username,
+                    currentUser!!.email,
+                    currentUser!!.profileImgUrl,
+                    currentUser!!.profileImageId,
+                    subject = null
+                )
+            )
+            goToLatestMessagesFragment()
+        } else {
+            Toast.makeText(requireContext(), "You are not a tutor.", Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
+
+    override fun isUploadPhotoSuccessful(
+        isSuccess: Boolean,
+        statue: String,
+        uri: Uri?,
+        imageId: String?,
+
+
+    ) {
+        if (isSuccess) {
+            if (currentUser?.profileImgUrl != null) {
+                profileViewModel.deleteImageFromFireStorageProfile(currentUser!!.profileImageId!!)
+            }
+            updateUser(uri!!, imageId )
+        } else {
+            Toast.makeText(requireContext(), statue, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+
+    override fun isUpdateUserFromFireStoreSuccess(isSuccess: Boolean, state: String) {
+        loadingAlertDialog.hideLoadingAlertDialog()
+        if (isSuccess) {
+            Toast.makeText(requireContext(), "Updated", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(requireContext(), state, Toast.LENGTH_SHORT).show()
+        }
+        profileViewModel.getCurrentUser()
+    }
+
+}

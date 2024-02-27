@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    tools:context=".ui.fragments.profile.ProfileTutorFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/img_btn_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/back_icon"
+                    app:tint="@color/button_background" />
+
+                <TextView
+                    android:id="@+id/tv_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:text="Profile Tutor"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_16sdp"
+                    android:fontFamily="@font/magilio"
+                     />
+            </LinearLayout>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/cir_image_user"
+                android:layout_width="144dp"
+                android:layout_height="130dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:src="@drawable/prof"
+                app:civ_border_color="@color/hintTextColor"
+                app:civ_border_width="@dimen/_2sdp" />
+
+            <TextView
+                android:id="@+id/tv_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_16sdp"
+                android:fontFamily="@font/magilio"
+                android:padding="@dimen/_8sdp"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_16ssp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_name"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_16sdp"
+                android:background="@color/background_layout_et_color"
+                android:hint="@string/username"
+                android:textColorHint="@color/hintTextColor">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/magilio"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/text_color" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_subject"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_16sdp"
+                android:background="@color/background_layout_et_color"
+                android:hint="Subject"
+                android:textColorHint="@color/hintTextColor">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_subject"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/magilio"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/text_color" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_class"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_16sdp"
+                android:background="@color/background_layout_et_color"
+                android:hint="Level"
+                android:textColorHint="@color/hintTextColor">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_class"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/magilio"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/text_color" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_description"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="365dp"
+                android:layout_height="118dp"
+                android:layout_margin="@dimen/_16sdp"
+                android:background="@color/background_layout_et_color"
+                android:hint="Description"
+                android:textColorHint="@color/hintTextColor">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:fontFamily="@font/magilio"
+                    android:gravity="start|top"
+                    android:inputType="textMultiLine"
+                    android:textColor="@color/text_color" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_phonenumber"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_16sdp"
+                android:background="@color/background_layout_et_color"
+                android:hint="Phone Number"
+                android:textColorHint="@color/hintTextColor">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_phonenumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ems="10"
+                    android:fontFamily="@font/magilio"
+                    android:inputType="phone"
+                    android:textColor="@color/text_color" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_lineid"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_16sdp"
+                android:background="@color/background_layout_et_color"
+                android:hint="Line ID"
+                android:textColorHint="@color/hintTextColor">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_lineid"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/magilio"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/text_color" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_profile2"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/_16sdp"-->
+<!--                android:layout_marginTop="@dimen/_16sdp"-->
+<!--                android:text="add image to show skills"-->
+<!--                android:textColor="@color/text_color"-->
+<!--                android:textSize="@dimen/_12ssp"-->
+<!--                android:textStyle="bold" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/tutorimage"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="270dp"-->
+<!--                android:src="@drawable/blankpic" />-->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_bd"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_16sdp"
+                android:background="@color/background_layout_et_color"
+                android:hint="Birthday 00/00/0000"
+                android:textColorHint="@color/hintTextColor">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_bd"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/magilio"
+                    android:inputType="date"
+                    android:textColor="@color/text_color" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_32sdp"
+                android:layout_marginLeft="@dimen/_32sdp"
+                android:layout_marginBottom="@dimen/_32sdp"
+                android:layout_marginTop="18dp"
+                android:backgroundTint="@color/button_background"
+                android:padding="@dimen/_8sdp"
+                android:text="save tutor profile"
+                android:textColor="@color/button_text_color" />
+
+            <Button
+                android:id="@+id/btn_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_32sdp"
+                android:layout_marginLeft="@dimen/_32sdp"
+                android:layout_marginTop="18dp"
+                android:backgroundTint="@color/hintTextColor"
+                android:padding="@dimen/_8sdp"
+                android:text="introduction video"
+                android:textColor="@color/button_text_color" />
+
+            <Button
+                android:id="@+id/btn_resign"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_32sdp"
+                android:layout_marginLeft="@dimen/_32sdp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/design_default_color_error"
+                android:padding="@dimen/_8sdp"
+                android:text="resigned as a tutor"
+                android:layout_marginBottom="@dimen/_32sdp"
+                android:textColor="@color/button_text_color" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

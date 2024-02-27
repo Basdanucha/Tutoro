@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "590301938297",
+    "firebase_url": "https://tutoro-44bcd-default-rtdb.firebaseio.com",
+    "project_id": "tutoro-44bcd",
+    "storage_bucket": "tutoro-44bcd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:590301938297:android:3e4033f73731f04664caa8",
+        "android_client_info": {
+          "package_name": "com.sameh.chatme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "590301938297-o3fr4ubhgm91r7c5bj1ston1vlhec9j4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB71f5EtiHiVUYEz0i1FXEpSZmMP2_ZaM8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "590301938297-o3fr4ubhgm91r7c5bj1ston1vlhec9j4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
